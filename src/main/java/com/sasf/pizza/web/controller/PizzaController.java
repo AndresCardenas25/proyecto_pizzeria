@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,11 +61,13 @@ public class PizzaController {
         return ResponseEntity.ok(this.pizzaService.getByWithoutIngredient(ingredient));
     }
 
+    
     @GetMapping("cheapest/{price}")
     public ResponseEntity<List<PizzaEntity>> getCheapestPizzas(@PathVariable double price){
         return ResponseEntity.ok(this.pizzaService.getCheapest(price));
     }
 
+    @Secured("ROLE_CUSTOMER")
     @GetMapping("/{idPizza}")
     public ResponseEntity<PizzaEntity> getById(@PathVariable int idPizza){
         return ResponseEntity.ok(pizzaService.getById(idPizza));
